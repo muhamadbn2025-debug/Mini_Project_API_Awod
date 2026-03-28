@@ -45,7 +45,7 @@ const productsModel = {
     );
   },
 
-  // 🔥 JOIN (WAJIB)
+  // JOIN 
   getWithCategory: async () => {
     const [rows] = await pool.query(`
       SELECT p.product_id, p.product_name, p.price, c.category_name
