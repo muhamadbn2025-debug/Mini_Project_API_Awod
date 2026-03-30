@@ -1,17 +1,17 @@
 const { pool } = require("../config/database");
 
-const departemenModel = {
+const usersModel = {
 
   // GET ALL
   findAll: async () => {
-    const [rows] = await pool.query("SELECT * FROM departemen");
+    const [rows] = await pool.query("SELECT * FROM users");
     return rows;
   },
 
   // GET BY ID
   getById: async (id) => {
     const [rows] = await pool.query(
-      "SELECT * FROM departemen WHERE id = ?",
+      "SELECT * FROM users WHERE user_id = ?",
       [id]
     );
     return rows[0];
@@ -19,32 +19,32 @@ const departemenModel = {
 
   // CREATE
   create: async (data) => {
-    const { name } = data;
+    const { name, email } = data;
 
     await pool.query(
-      "INSERT INTO departemen (name) VALUES (?)",
-      [name]
+      "INSERT INTO users (name, email) VALUES (?, ?, ?, ?, ?)",
+      [name, email]
     );
   },
 
   // UPDATE
   update: async (id, data) => {
-    const { name } = data;
+    const { name, email } = data;
 
     await pool.query(
-      "UPDATE departemen SET name=? WHERE id=?",
-      [name, id]
+      "UPDATE users SET name=?, email=?, stock=? WHERE user_id=?",
+      [name, email]
     );
   },
 
   // DELETE
   delete: async (id) => {
     await pool.query(
-      "DELETE FROM departemen WHERE id=?",
+      "DELETE FROM users WHERE user_id=?",
       [id]
     );
-  }
+  },
 
 };
 
-module.exports = departemenModel;
+module.exports = usersModel;
