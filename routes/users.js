@@ -3,20 +3,12 @@ const router = express.Router();
 
 const users = require("../controllers/Users");
 
-// GET ALL
-router.get("/", users.getAll);
+const validateAuth = require("../middleware/validateAuth");
 
-// GET BY ID
-router.get("/:id", users.getById);
-
-// CREATE
-router.post("/", users.create);
-
-// UPDATE
-router.put("/:id", users.update);
-
-// DELETE
-router.delete("/:id", users.delete);
-
+// PROTECTED ROUTES
+router.get("/", validateAuth.validateToken, users.getAll);
+router.get("/:id", validateAuth.validateToken, users.getById);
+router.put("/:id", validateAuth.validateToken, users.update);
+router.delete("/:id", validateAuth.validateToken, users.delete);
 
 module.exports = router;

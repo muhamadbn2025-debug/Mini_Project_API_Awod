@@ -1,4 +1,5 @@
 const { pool } = require("../config/database");
+const bcrypt = require("bcrypt");
 
 const usersModel = {
 
@@ -17,13 +18,23 @@ const usersModel = {
     return rows[0];
   },
 
-  // CREATE
-  create: async (data) => {
-    const { name, email } = data;
+  //GET BY EMAIL
+  getByEmail: async (email) => {
+    const [rows] = await pool.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+    return rows[0];
+  },
+
+  registration: async (data) => {
+    const { name, email, password } = data;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await pool.query(
-      "INSERT INTO users (name, email) VALUES (?, ?, ?, ?, ?)",
-      [name, email]
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashedPassword]
     );
   },
 
@@ -32,8 +43,8 @@ const usersModel = {
     const { name, email } = data;
 
     await pool.query(
-      "UPDATE users SET name=?, email=?, stock=? WHERE user_id=?",
-      [name, email]
+      "UPDATE users SET name=?, email=? WHERE user_id=?",
+      [name, email, id]
     );
   },
 
@@ -45,6 +56,31 @@ const usersModel = {
     );
   },
 
+
+
+updatePassword: async (password, id) => {
+  const [rows] = await pool.query(
+    "UPDATE users SET password = ? WHERE user_id = ?",
+    [password, id],
+  );
+  return rows;
+},
 };
 
 module.exports = usersModel;
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+  
+ 
