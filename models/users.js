@@ -30,11 +30,9 @@ const usersModel = {
   registration: async (data) => {
     const { name, email, password } = data;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     await pool.query(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword]
+      [name, email, password]
     );
   },
 

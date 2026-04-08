@@ -18,7 +18,7 @@ const productsModel = {
   },
 
   // CREATE
-  create: async (data) => {
+  store: async (data) => {
     const { product_name, price, stock, user_id, category_id } = data;
 
     await pool.query(
@@ -38,7 +38,7 @@ const productsModel = {
   },
 
   // DELETE
-  delete: async (id) => {
+  destroy: async (id) => {
     await pool.query(
       "DELETE FROM products WHERE product_id=?",
       [id]

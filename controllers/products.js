@@ -45,7 +45,7 @@ const productsController = {
   getById: async (req, res, next) => {
     try {
       const {id} = req.params;
-      const products = await productsModel.findById(id);
+      const products = await productsModel.getById(id);
       if (!products) {
         throw new AppError("Products not found", 404);
       }
@@ -67,27 +67,31 @@ const productsController = {
           errors: errors.array(),
         });
       }
-      const { name, price, stock } = req.body;
+      
+      const { product_name, price, stock, user_id, category_id } = req.body;
+      
       const data = {
-        name: name,
-        price: price,
-        stock: stock,
+        product_name, 
+        price,
+        stock,
+        user_id,
+        category_id,
       };
-      const products = await productsModel.store(data);
+      
+      await productsModel.store(data); 
       redis.del("all_products");
+      
       res.json({
         code: 200,
         message: "Successfully store products",
         data: {
-          id: products.insertId,
-          name: data.name,
-          price: data.price,
-          stock: data.stock,
+          product_name,
+          price,
+          stock,
         },
       });
-      } catch (error) {
-        res.status(500).json({ message: error.message });
-      }
+    } catch (error) {
+      next(error); }
   },
 
   update: async (req, res, next) => {
@@ -97,7 +101,7 @@ const productsController = {
         if (!name && !price && !stock) {
           throw new AppError("name, price, and stock are required", 400);
         }
-        const oldProducts = await productsModel.findById(id);
+        const oldProducts = await productsModel.getById(id);
         if (!oldProducts) {
           return res.status(404).json({ message: "Products not found" });
         }
@@ -126,7 +130,7 @@ const productsController = {
   destroy: async (req, res, next) => {
     try {
       const { id } = req.params;
-        const products = await productsModel.findById(id);
+        const products = await productsModel.getById(id);
       if (!products) {
         throw new AppError("Product not found", 404);
       }

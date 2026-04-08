@@ -16,7 +16,11 @@ const validateRegistration = [
 // LOGIN VALIDATION
 const validateLogin = [
   body("email").isEmail().withMessage("Email is required").normalizeEmail(),
-  body("password").notEmpty().withMessage("Password is required"),
+  body("password")
+  .notEmpty()
+  .withMessage("Password is required")
+  .isLength({ min: 6 })
+  .withMessage("Password must be at least 6 characters long"),
 ];
 
 // TOKEN VALIDATION

@@ -18,8 +18,11 @@ const authController = {
     }
 
     const { name, email, password } = req.body;
+    console.log("password saat register:", password);
 
-    const hashPassword = await bcrypt.hash(password, 10);
+
+    const hashPassword = await bcrypt.hash(password, 10)
+    console.log("hash yang disimpan:", hashPassword);
 
     const data = {
       name,
@@ -71,13 +74,17 @@ const authController = {
       const { email, password } = req.body;
 
       const user = await userModel.getByEmail(email);
+      console.log("password dari request:", password);
+      console.log("hash dari DB:", user.password);
 
+      
       if (!user) {
         throw new AppError("Email or password is wrong", 400);
       }
 
       const checkPassword = await bcrypt.compare(password, user.password);
-
+      console.log("hasil compare:", checkPassword);
+      
       if (!checkPassword) {
         throw new AppError("Email or password is wrong", 400);
       }
