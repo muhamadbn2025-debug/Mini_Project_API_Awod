@@ -54,7 +54,18 @@ const productsModel = {
       ON p.category_id = c.category_id
     `);
     return rows;
-  }
+  },
+
+  // AGGREGATION - jumlah products per category
+  countPerCategory: async () => {
+  const [rows] = await pool.query(`
+    SELECT c.category_id, c.category_name, COUNT(p.product_id) as total_products
+    FROM product_category c
+    LEFT JOIN products p ON c.category_id = p.category_id
+    GROUP BY c.category_id, c.category_name
+  `);
+  return rows;
+  },
 
 };
 

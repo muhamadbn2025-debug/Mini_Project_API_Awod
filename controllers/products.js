@@ -42,6 +42,19 @@ const productsController = {
     }
   },
 
+  countPerCategory: async (req, res, next) => {
+  try {
+    const data = await productsModel.countPerCategory();
+    res.json({
+      code: 200,
+      message: "Successfully get product count per category",
+      data: data,
+    });
+    } catch (error) {
+    next(error);
+    }
+ },
+
   getById: async (req, res, next) => {
     try {
       const {id} = req.params;

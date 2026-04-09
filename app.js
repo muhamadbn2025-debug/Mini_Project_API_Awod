@@ -19,6 +19,7 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use("/auth", authRouter);
 app.use("/products", productRouter);
+app.use("/products_category", product_categoryRouter);
 
 app.get("/test", (req, res) => {
   res.json({ message: "CORS OK" });

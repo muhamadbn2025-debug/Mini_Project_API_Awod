@@ -11,6 +11,7 @@ router.use(validateAuth.validateToken);
 // GET
 router.get("/", productController.getAll);
 router.get("/with-category", productController.getWithCategory);
+router.get("/count-per-category", productController.countPerCategory); 
 router.get("/:id", productController.getById);
 
 // CREATE & UPDATE pakai validasi

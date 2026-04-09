@@ -32,8 +32,8 @@ const product_categoryModel = {
     const { category_name } = data;
 
     await pool.query(
-      "UPDATE product_category SET category_name=?, WHERE category_id=?",
-      [category_name]
+      "UPDATE product_category SET category_name=? WHERE category_id=?",
+      [category_name, id]
     );
   },
 
